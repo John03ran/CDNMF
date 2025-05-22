@@ -47,6 +47,7 @@ Convergence Rate on **Cora**, **Citeseer**:
 ## Citation
 Please cite our paper if you use this code or our model in your own work:
 
+```BibTex
 @inproceedings{li2024contrastive,  
   title={Contrastive deep nonnegative matrix factorization for community detection},  
   author={Li, Yuecheng and Chen, Jialong and Chen, Chuan and Yang, Lei and Zheng, Zibin},  
@@ -55,5 +56,6 @@ Please cite our paper if you use this code or our model in your own work:
   year={2024},  
   organization={IEEE}  
 }
+```
 
 
