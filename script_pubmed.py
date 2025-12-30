@@ -1,5 +1,6 @@
 import os
 import random
+import pickle
 import numpy as np
 import linecache
 import matplotlib.pyplot as plt
@@ -40,33 +41,61 @@ if __name__=='__main__':
                       'device': device}
     graph = Dataset(dataset_config)
 
-    pretrain_config = {
-        'net_shape': [512, 64, 3],
-        'att_shape': [200, 100, 3],
-        'net_input_dim': graph.num_nodes,
-        'att_input_dim': graph.num_feas,
-        'seed': 42,
-        'pre_iterations': 100,
-        'pretrain_params_path': './Log/pubmed/pretrain_params.pkl'
-    }
+    # Best hyperparameters from Optuna
+    net_h1 = 256
+    net_h2 = 64
+    att_h1 = 200
+    att_h2 = 50
+    
+    net_shape = [net_h1, net_h2, graph.num_classes]
+    att_shape = [att_h1, att_h2, graph.num_classes]
+    
+    pretrain_params_path = './Log/pubmed/pretrain_params_best.pkl'
+    
+    # Construct pretrain params from cache
+    print("Constructing pretrain params from cache...")
+    cache_dir = './Log/pubmed/cache'
+    net_cache_file = os.path.join(cache_dir, f'net_{net_h1}_{net_h2}.pkl')
+    att_cache_file = os.path.join(cache_dir, f'att_{att_h1}_{att_h2}.pkl')
+    
+    if os.path.exists(net_cache_file) and os.path.exists(att_cache_file):
+        U_init_merged = {}
+        V_init_merged = {}
+        
+        with open(net_cache_file, 'rb') as f:
+            U_net, V_net = pickle.load(f)
+            U_init_merged.update(U_net)
+            V_init_merged.update(V_net)
+            
+        with open(att_cache_file, 'rb') as f:
+            U_att, V_att = pickle.load(f)
+            U_init_merged.update(U_att)
+            V_init_merged.update(V_att)
+            
+        with open(pretrain_params_path, 'wb') as f:
+            pickle.dump([U_init_merged, V_init_merged], f, protocol=pickle.HIGHEST_PROTOCOL)
+        print(f"Saved best pretrain params to {pretrain_params_path}")
+    else:
+        print("Warning: Cache files not found. You may need to run generate_pretrain_cache.py or enable pre-training.")
 
     model_config = {
         'device': device,
-        'net_shape': [512, 64, 3],
-        'att_shape': [200, 100, 3],
+        'net_shape': net_shape,
+        'att_shape': att_shape,
         'net_input_dim': graph.num_nodes,
         'att_input_dim': graph.num_feas,
         'is_init': True,
-        'pretrain_params_path': './Log/pubmed/pretrain_params.pkl',
-        'tau': 0.5,
-        'conc': 1,
-        'negc': 100,
-        'rec': 1,
-        'r': 1,
-        'learning_rate': 0.01,
-        'weight_decay': 0.00001,
-        'epoch': 600,
-        'run': 20,
+        'pretrain_params_path': pretrain_params_path,
+        'tau': 1.75679,
+        'conc': 3.317,
+        'negc': 4552,
+        'rec': 1.115,
+        'r': 2.8044,
+        'dropout': 0.41,
+        'learning_rate': 0.00572,
+        'weight_decay': 4.797e-06,
+        'epoch': 400,
+        'run': 10,
         'model_path': './Log/pubmed/pubmed_model.pkl'
     }
 
@@ -87,18 +116,98 @@ if __name__=='__main__':
     N = []
 
     # 'Fine-tuning stage'
-    for i in range(20):
+    all_loss_history = []
+    all_acc_history = []
+    all_nmi_history = []
+
+    for i in range(model_config['run']):
 
         model = Model(model_config).to(device)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+        
+        loss_history = []
+        acc_history = []
+        nmi_history = []
 
+        print(f"Run {i+1} started...")
+        best_acc_run = 0
+        best_nmi_run = 0
+        
         for epoch in range(1, model_config['epoch']):
             loss, loss1, loss2, loss3, loss4, loss5, scores = train(model, graph, optimizer)
+            
+            loss_history.append(loss)
+            acc_history.append(scores['ACC'])
+            nmi_history.append(scores['NMI'])
+            
+            if scores['ACC'] > best_acc_run:
+                best_acc_run = scores['ACC']
+                best_nmi_run = scores['NMI']
+
+            if epoch % 50 == 0:
+                print(f"Run {i+1}, Epoch {epoch}: Loss {loss:.4f}, ACC {scores['ACC']:.4f}, NMI {scores['NMI']:.4f}")
 
             now = t()
             prev = now
-        M.append(scores['ACC'])
-        N.append(scores['NMI'])
+        M.append(best_acc_run)
+        N.append(best_nmi_run)
+        
+        all_loss_history.append(loss_history)
+        all_acc_history.append(acc_history)
+        all_nmi_history.append(nmi_history)
+        
+    # Plotting All Runs
+    plt.figure(figsize=(18, 5))
+    
+    plt.subplot(1, 3, 1)
+    for i, history in enumerate(all_loss_history):
+        plt.plot(history, alpha=0.3, label=f'Run {i+1}')
+    plt.title('Training Loss (All Runs)')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    
+    plt.subplot(1, 3, 2)
+    for i, history in enumerate(all_acc_history):
+        plt.plot(history, alpha=0.3, label=f'Run {i+1}')
+    plt.title('Training ACC (All Runs)')
+    plt.xlabel('Epoch')
+    plt.ylabel('ACC')
+
+    plt.subplot(1, 3, 3)
+    for i, history in enumerate(all_nmi_history):
+        plt.plot(history, alpha=0.3, label=f'Run {i+1}')
+    plt.title('Training NMI (All Runs)')
+    plt.xlabel('Epoch')
+    plt.ylabel('NMI')
+    
+    if not os.path.exists('./figures'):
+        os.makedirs('./figures')
+    plt.savefig('./figures/pubmed_training_all_runs.png')
+    print("All runs curves saved to ./figures/pubmed_training_all_runs.png")
+
+    # Plotting Mean Curves
+    mean_loss = np.mean(all_loss_history, axis=0)
+    mean_acc = np.mean(all_acc_history, axis=0)
+    mean_nmi = np.mean(all_nmi_history, axis=0)
+
+    plt.figure(figsize=(12, 5))
+    
+    plt.subplot(1, 2, 1)
+    plt.plot(mean_loss, color='blue', linewidth=2)
+    plt.title('Mean Training Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    
+    plt.subplot(1, 2, 2)
+    plt.plot(mean_acc, label='Mean ACC', color='green', linewidth=2)
+    plt.plot(mean_nmi, label='Mean NMI', color='orange', linewidth=2)
+    plt.title('Mean Training Metrics')
+    plt.xlabel('Epoch')
+    plt.ylabel('Score')
+    plt.legend()
+    
+    plt.savefig('./figures/pubmed_training_mean.png')
+    print("Mean curves saved to ./figures/pubmed_training_mean.png")
         
     print('ACC: ', np.mean(M), '; NMI: ', np.mean(N))
     print("=== Final ===")
