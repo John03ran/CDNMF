@@ -44,7 +44,7 @@ if __name__=='__main__':
     # Best hyperparameters from Optuna
     net_h1 = 256
     net_h2 = 64
-    att_h1 = 200
+    att_h1 = 100
     att_h2 = 50
     
     net_shape = [net_h1, net_h2, graph.num_classes]
@@ -86,14 +86,14 @@ if __name__=='__main__':
         'att_input_dim': graph.num_feas,
         'is_init': True,
         'pretrain_params_path': pretrain_params_path,
-        'tau': 1.75679,
-        'conc': 3.317,
-        'negc': 4552,
-        'rec': 1.115,
-        'r': 2.8044,
-        'dropout': 0.41,
-        'learning_rate': 0.00572,
-        'weight_decay': 4.797e-06,
+        "tau": 0.20124038471994485,
+        "conc": 1.4600839035171718,
+        "negc": 4365,
+        "rec": 4.955762923471801,
+        "r": 3.8253926728514838,
+        "dropout": 0.6674375082841816,
+        "learning_rate": 0.011021530771800956,
+        "weight_decay": 1.768022185164367e-06,
         'epoch': 400,
         'run': 10,
         'model_path': './Log/pubmed/pubmed_model.pkl'

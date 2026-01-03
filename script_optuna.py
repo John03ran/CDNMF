@@ -11,7 +11,7 @@ from PreTrainer.pretrainer import PreTrainer
 
 import pickle
 
-dataset_name = 'cora'  # Change as needed: 'cora', 'citeseer', 'pubmed'
+dataset_name = 'citeseer'  # Change as needed: 'cora', 'citeseer', 'pubmed'
 
 # Ensure reproducibility
 def set_seed(seed):
@@ -128,7 +128,7 @@ def objective(trial):
         'dropout': dropout,
         'learning_rate': learning_rate,
         'weight_decay': weight_decay,
-        'epoch': 400, # Reduced epochs for faster optimization
+        'epoch': 1200, # Reduced epochs for faster optimization
         'run': 5,     # Reduced runs for faster optimization
         'model_path': f'./Log/{dataset_name}/{dataset_name}_model_optuna_{trial.number}.pkl'
     }

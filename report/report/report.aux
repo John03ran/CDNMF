@@ -1,0 +1,58 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{lee1999learning}
+\citation{trigeorgis2017deep}
+\citation{li2024contrastive}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{akiba2019optuna}
+\citation{li2024contrastive}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Overview of Existing Work}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Problem Formulation}{2}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Deep NMF}{2}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}The CDNMF Model}{2}{subsection.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overview of the CDNMF model architecture.}}{3}{figure.caption.2}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:cdnmf_overview}{{1}{3}{Overview of the CDNMF model architecture}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.1}Reconstruction Loss ($\mathcal  {L}_{rec}$)}{3}{subsubsection.2.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.2}Contrastive Loss ($\mathcal  {L}_{con}$)}{3}{subsubsection.2.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.3.3}Regularization ($\mathcal  {L}_{reg}$)}{3}{subsubsection.2.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Criticism of Existing Works}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Computational Inefficiency and Scalability}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Naive Fusion Strategy}{4}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Lack of Modern Regularization Techniques}{4}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}New Contributions}{4}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Mathematical Optimization for Sparse Computation}{4}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Optimized Reconstruction Loss}{4}{subsubsection.4.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Illustration of the optimized reconstruction loss calculation avoiding dense matrix construction.}}{5}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:opt_loss}{{2}{5}{Illustration of the optimized reconstruction loss calculation avoiding dense matrix construction}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Optimized Regularization Loss}{5}{subsubsection.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Attention-based Fusion}{5}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The proposed architecture incorporating Attention-based Fusion and Dropout Regularization.}}{5}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:fusion_dropout}{{3}{5}{The proposed architecture incorporating Attention-based Fusion and Dropout Regularization}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Dropout Regularization}{6}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}AutoML Workflow with Optuna}{6}{subsection.4.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The decoupled AutoML workflow using Optuna for efficient hyperparameter search.}}{6}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:optuna}{{4}{6}{The decoupled AutoML workflow using Optuna for efficient hyperparameter search}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Numerical Results}{6}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Community Detection Performance}{6}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Community detection performance (ACC and NMI) on three datasets.}}{7}{table.caption.6}\protected@file@percent }
+\newlabel{tab:performance}{{1}{7}{Community detection performance (ACC and NMI) on three datasets}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Computational Efficiency Analysis}{7}{subsection.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Efficiency Comparison: Original vs. Optimized CDNMF}}{7}{table.caption.7}\protected@file@percent }
+\newlabel{tab:efficiency}{{2}{7}{Efficiency Comparison: Original vs. Optimized CDNMF}{table.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Training Convergence and Stability}{8}{subsection.5.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Mean training loss and ACC/NMI over epochs for Cora, Citeseer, and PubMed datasets.}}{8}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:training_curves}{{5}{8}{Mean training loss and ACC/NMI over epochs for Cora, Citeseer, and PubMed datasets}{figure.caption.8}{}}
+\bibcite{li2024contrastive}{{1}{}{{}}{{}}}
+\bibcite{lee1999learning}{{2}{}{{}}{{}}}
+\bibcite{trigeorgis2017deep}{{3}{}{{}}{{}}}
+\bibcite{cai2011graph}{{4}{}{{}}{{}}}
+\bibcite{ye2018deep}{{5}{}{{}}{{}}}
+\bibcite{chen2020simple}{{6}{}{{}}{{}}}
+\bibcite{velickovic2018graph}{{7}{}{{}}{{}}}
+\bibcite{akiba2019optuna}{{8}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{9}{section.6}\protected@file@percent }
+\gdef \@abspage@last{9}

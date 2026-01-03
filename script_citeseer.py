@@ -42,10 +42,10 @@ if __name__=='__main__':
     graph = Dataset(dataset_config)
 
     # Default hyperparameters (or from Optuna if you run it later)
-    net_h1 = 256
-    net_h2 = 32
-    att_h1 = 400
-    att_h2 = 100
+    net_h1 = 1024
+    net_h2 = 64
+    att_h1 = 100
+    att_h2 = 50
     
     net_shape = [net_h1, net_h2, graph.num_classes]
     att_shape = [att_h1, att_h2, graph.num_classes]
@@ -88,14 +88,14 @@ if __name__=='__main__':
         'att_input_dim': graph.num_feas,
         'is_init': True,
         'pretrain_params_path': pretrain_params_path,
-        "tau": 1.0521905831005203,
-        "conc": 9.888632139642308,
-        "negc": 4232,
-        "rec": 3.91856241684849,
-        "r": 2.6626667859600475,
-        "dropout": 0.35223692438317733,
-        "learning_rate": 0.002898904290648575,
-        "weight_decay": 2.011869449419384e-06,
+        "tau": 1.567162119070891,
+        "conc": 3.8074432755513845,
+        "negc": 3962,
+        "rec": 3.4507046535972195,
+        "r": 0.8935524026835238,
+        "dropout": 0.6440324722972812,
+        "learning_rate": 0.0010499413609892179,
+        "weight_decay": 0.0005236190959999153,
         'epoch': 1500,
         'run': 10,
         'model_path': './Log/citeseer/citeseer_model.pkl'
